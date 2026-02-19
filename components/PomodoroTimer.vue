@@ -9,7 +9,6 @@ const {
   isBreak,
   completedSessions,
   totalSessions,
-  completedSessionsToday,
   focusMinutes,
   breakMinutes,
   dailyGoal,
@@ -26,6 +25,17 @@ const focusMinutesInput = ref(focusMinutes.value)
 const breakMinutesInput = ref(breakMinutes.value)
 const dailyGoalInput = ref(dailyGoal.value)
 
+// In-app notifications array
+const notifications = ref([])
+
+// Show a notification for 3 seconds
+const showNotification = (message) => {
+  notifications.value.push(message)
+  setTimeout(() => {
+    notifications.value.shift()
+  }, 3000)
+}
+
 // Apply durations
 const applySettings = () => {
   updateDurations(focusMinutesInput.value, breakMinutesInput.value)
@@ -36,7 +46,7 @@ const applyGoal = () => {
   updateGoal(dailyGoalInput.value)
 }
 
-// Request notifications
+// Request browser notifications
 onMounted(() => {
   if (Notification.permission !== "granted") {
     Notification.requestPermission()
@@ -56,6 +66,24 @@ watch(goalReached, (newVal) => {
       if (Date.now() < end) requestAnimationFrame(frame)
     }
     frame()
+  }
+})
+
+// Watch for session changes to trigger notifications
+watch([isBreak, isRunning], ([breakStatus, running]) => {
+  if (!running) return
+  if (breakStatus) {
+    // Break started
+    if (Notification.permission === 'granted') {
+      new Notification('Break Time!', `Take a ${breakMinutes.value}-minute break.`)
+    }
+    showNotification(`Break started! ${breakMinutes.value} min`)
+  } else {
+    // Focus started
+    if (Notification.permission === 'granted') {
+      new Notification('Focus Time!', `Back to work for ${focusMinutes.value} minutes.`)
+    }
+    showNotification(`Focus started! ${focusMinutes.value} min`)
   }
 })
 </script>
@@ -106,7 +134,7 @@ watch(goalReached, (newVal) => {
       <div class="w-full pt-4 border-t border-gray-200 dark:border-gray-700 space-y-2">
         <div class="flex justify-between text-sm">
           <span>Today's Sessions</span>
-          <span class="font-semibold text-teal-600 dark:text-teal-400">{{ completedSessionsToday }}</span>
+          <span class="font-semibold text-teal-600 dark:text-teal-400">{{ completedSessions }}</span>
         </div>
         <div class="flex justify-between text-sm">
           <span>Total Sessions</span>
@@ -132,6 +160,17 @@ watch(goalReached, (newVal) => {
         <input v-model.number="dailyGoalInput" type="number" min="1" class="input w-full" />
 
         <button @click="applyGoal" class="btn-primary mt-2 w-full">Set Goal</button>
+      </div>
+
+      <!-- In-App Notifications -->
+      <div class="fixed top-4 right-4 flex flex-col space-y-2 z-50">
+        <div
+          v-for="(note, index) in notifications"
+          :key="index"
+          class="bg-teal-500 text-white px-4 py-2 rounded shadow-lg"
+        >
+          {{ note }}
+        </div>
       </div>
     </div>
   </div>
