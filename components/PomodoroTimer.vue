@@ -17,7 +17,8 @@ const {
   pause,
   reset,
   updateDurations,
-  updateGoal
+  updateGoal,
+  autoStart
 } = usePomodoro()
 
 const focusMinutesInput = ref(focusMinutes.value)
@@ -44,27 +45,14 @@ onMounted(() => {
 // 🎆 CONFETTI TRIGGER
 watch(goalReached, (newVal) => {
   if (newVal) {
-    // Firework/confetti for 2 seconds
     const duration = 2 * 1000
     const end = Date.now() + duration
 
     const frame = () => {
-      confetti({
-        particleCount: 5,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0 },
-      })
-      confetti({
-        particleCount: 5,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1 },
-      })
+      confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } })
+      confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } })
 
-      if (Date.now() < end) {
-        requestAnimationFrame(frame)
-      }
+      if (Date.now() < end) requestAnimationFrame(frame)
     }
     frame()
   }
@@ -105,6 +93,12 @@ watch(goalReached, (newVal) => {
         >
           Reset
         </button>
+      </div>
+
+      <!-- Auto-Start Toggle -->
+      <div class="flex items-center space-x-2 mt-2">
+        <input type="checkbox" id="autoStart" v-model="autoStart" class="checkbox" />
+        <label for="autoStart" class="text-sm text-gray-600 dark:text-gray-400">Auto-start break after focus</label>
       </div>
 
       <!-- Stats -->
