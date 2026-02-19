@@ -9,6 +9,7 @@ const {
   isBreak,
   completedSessions,
   totalSessions,
+  completedSessionsToday,
   focusMinutes,
   breakMinutes,
   dailyGoal,
@@ -105,7 +106,7 @@ watch(goalReached, (newVal) => {
       <div class="w-full pt-4 border-t border-gray-200 dark:border-gray-700 space-y-2">
         <div class="flex justify-between text-sm">
           <span>Today's Sessions</span>
-          <span class="font-semibold text-teal-600 dark:text-teal-400">{{ completedSessions }}</span>
+          <span class="font-semibold text-teal-600 dark:text-teal-400">{{ completedSessionsToday }}</span>
         </div>
         <div class="flex justify-between text-sm">
           <span>Total Sessions</span>

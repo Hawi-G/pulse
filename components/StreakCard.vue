@@ -34,5 +34,7 @@
 </template>
 
 <script setup>
+import { useStreak } from '~/composables/useStreak';
+
 const { currentStreak, bestStreak } = useStreak();
 </script>

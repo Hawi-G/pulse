@@ -1,7 +1,24 @@
+import { ref, computed, onMounted } from 'vue';
+
 export const useStreak = () => {
   const currentStreak = ref(0);
   const bestStreak = ref(0);
   const lastSessionDate = ref(null);
+
+  const getDateKey = (date = new Date()) => date.toISOString().split('T')[0];
+
+  const saveStreak = () => {
+    if (process.client) {
+      localStorage.setItem(
+        'streak',
+        JSON.stringify({
+          currentStreak: currentStreak.value,
+          bestStreak: bestStreak.value,
+          lastSessionDate: lastSessionDate.value
+        })
+      );
+    }
+  };
 
   const loadStreak = () => {
     if (process.client) {
@@ -11,24 +28,9 @@ export const useStreak = () => {
         currentStreak.value = data.currentStreak || 0;
         bestStreak.value = data.bestStreak || 0;
         lastSessionDate.value = data.lastSessionDate || null;
-
         checkAndResetStreak();
       }
     }
-  };
-
-  const saveStreak = () => {
-    if (process.client) {
-      localStorage.setItem('streak', JSON.stringify({
-        currentStreak: currentStreak.value,
-        bestStreak: bestStreak.value,
-        lastSessionDate: lastSessionDate.value
-      }));
-    }
-  };
-
-  const getDateKey = (date = new Date()) => {
-    return date.toISOString().split('T')[0];
   };
 
   const checkAndResetStreak = () => {
@@ -47,10 +49,9 @@ export const useStreak = () => {
   const recordPomodoroSession = () => {
     const today = getDateKey();
     const lastDate = lastSessionDate.value ? getDateKey(new Date(lastSessionDate.value)) : null;
+    const yesterday = getDateKey(new Date(Date.now() - 86400000));
 
     if (lastDate !== today) {
-      const yesterday = getDateKey(new Date(Date.now() - 86400000));
-
       if (lastDate === yesterday || lastDate === null) {
         currentStreak.value++;
       } else {
