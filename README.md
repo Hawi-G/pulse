@@ -1,42 +1,18 @@
-# Nuxt 3 Minimal Starter
+Pulse – Productivity Dashboard
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Live on: https://pulseproductive.vercel.app/
+Pulse is a minimal productivity dashboard designed for medical students (or anyone needing focused work sessions). It helps you track Pomodoro sessions, maintain streaks, and earn achievement badges.
 
-## Setup
+Features
 
-Make sure to install the dependencies:
+Pomodoro Timer – Focus and break intervals with customizable durations.
 
-```bash
-# yarn
-yarn install
+Daily Goal Tracker – Set how many sessions you want to complete per day.
 
-# npm
-npm install
+Streaks & Badges – Track consecutive days of productivity and unlock achievement badges.
 
-# pnpm
-pnpm install
-```
+Notifications – In-app and browser notifications for focus/break transitions.
 
-## Development Server
+Confetti Celebration – Visual celebration when daily goals are reached.
 
-Start the development server on http://localhost:3000
-
-```bash
-npm run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-npm run build
-```
-
-Locally preview production build:
-
-```bash
-npm run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Dark Mode Support – Works in light and dark themes.
