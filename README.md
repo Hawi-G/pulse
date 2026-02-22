@@ -2,7 +2,7 @@ Pulse – Productivity Dashboard
 
 Live on: https://pulseproductive.vercel.app/
 
-Pulse is a minimal productivity dashboard designed for medical students (or anyone needing focused work sessions). It helps you track Pomodoro sessions, maintain streaks, and earn achievement badges.
+Pulse is a minimal productivity dashboard designed for medical students. It helps you track Pomodoro sessions, maintain streaks, and earn achievement badges.
 
 Features
 
